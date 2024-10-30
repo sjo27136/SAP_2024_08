@@ -3,6 +3,7 @@ name: Crawl and Notify
 on:
   schedule:
     - cron: '0 * * * *'  # 매 시간마다 실행
+  workflow_dispatch:
 
 jobs:
   crawl:
