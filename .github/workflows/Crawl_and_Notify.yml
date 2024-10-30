@@ -29,6 +29,6 @@ jobs:
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
           TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
           TO_PHONE_NUMBER: ${{ secrets.TO_PHONE_NUMBER }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_REPO: ${{ secrets.GH_REPO }}
         run: python crawl_and_notify.py
