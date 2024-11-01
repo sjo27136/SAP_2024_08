@@ -87,12 +87,16 @@ def extract_article_data_me(soup):
                 # 링크 생성
                 relative_url = link_tag['href']
                 full_url = base_url + relative_url
+                # 상세 페이지에 들어가서 내용 가져오기
+                detail_soup = parsing_beautifulsoup(full_url)
+                content_tag = detail_soup.select_one('.content')
+                content = content_tag.get_text(strip=True)[:50] if content_tag else "내용 없음"
 
                 # articles 리스트에 추가
                 articles.append({
                     "title": f"[환경부] {title}",
                     "date": date,
-                    "content": "내용 없음",
+                    "content": f"「{content}」",
                     "url": full_url
                 })
     return articles
@@ -118,6 +122,7 @@ def send_email(subject, body):
         print(f"이메일 전송 실패: {e}")
 
 
+
 def display_news():
     # 크롤링할 URL
     rda_url = 'https://rda.go.kr/board/board.do?mode=list&prgId=day_farmprmninfoEntry'
@@ -140,7 +145,7 @@ def display_news():
 
     # 스트림릿 앱 설정
     st.set_page_config(page_title="오늘의 농업 뉴스", layout="wide")
-    st.markdown(f"<h1 style='font-size: 36px;'>📢 오늘의 농업 뉴스 - {today_date}</h1>", unsafe_allow_html=True)
+    st.title(f"📢 오늘의 농업 뉴스 - {today_date}")
 
     # 세 개의 열로 구성
     col1, col2, col3 = st.columns(3)
@@ -150,7 +155,7 @@ def display_news():
         st.markdown(
             """
             <div style='border: 2px solid #0073e6; border-radius: 10px; padding: 15px; background-color: #f9f9f9;'>
-                <h2 style='color: #0073e6; font-size: 27px;'>농촌진흥청 📰</h2>
+                <h2 style='color: #0073e6;'>농촌진흥청 📰</h2>
             """,
             unsafe_allow_html=True
         )
@@ -158,8 +163,8 @@ def display_news():
             for article in rda_articles:
                 st.markdown(
                     f"""
-                    <div style='margin-bottom: 15px; font-size: 12px;'>
-                        <h3 style='margin: 0; font-size: 18px;'>{article['title']}</h3>
+                    <div style='margin-bottom: 15px;'>
+                        <h3 style='margin: 0;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
@@ -175,7 +180,7 @@ def display_news():
         st.markdown(
             """
             <div style='border: 2px solid #28a745; border-radius: 10px; padding: 15px; background-color: #f9f9f9;'>
-                <h2 style='color: #28a745; font-size: 27px;'>농사로 🌾</h2>
+                <h2 style='color: #28a745;'>농사로 🌾</h2>
             """,
             unsafe_allow_html=True
         )
@@ -183,8 +188,8 @@ def display_news():
             for article in nongsaro_articles:
                 st.markdown(
                     f"""
-                    <div style='margin-bottom: 15px; font-size: 12px;'>
-                        <h3 style='margin: 0; font-size: 18px;'>{article['title']}</h3>
+                    <div style='margin-bottom: 15px;'>
+                        <h3 style='margin: 0;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
@@ -200,7 +205,7 @@ def display_news():
         st.markdown(
             """
             <div style='border: 2px solid #ffcc00; border-radius: 10px; padding: 15px; background-color: #f9f9f9;'>
-                <h2 style='color: #ffcc00; font-size: 27px;'>환경부 🌍</h2>
+                <h2 style='color: #ffcc00;'>환경부 🌍</h2>
             """,
             unsafe_allow_html=True
         )
@@ -208,8 +213,8 @@ def display_news():
             for article in me_articles:
                 st.markdown(
                     f"""
-                    <div style='margin-bottom: 15px; font-size: 12px;'>
-                        <h3 style='margin: 0; font-size: 18px;'>{article['title']}</h3>
+                    <div style='margin-bottom: 15px;'>
+                        <h3 style='margin: 0;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
@@ -219,6 +224,7 @@ def display_news():
         else:
             st.write("최근 뉴스가 없습니다.")
         st.markdown("</div>", unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
     display_news()
