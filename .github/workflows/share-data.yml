@@ -1,0 +1,65 @@
+name: Share data between jobs
+
+on: [push]
+
+jobs:
+  job_1:
+    name: Crawl latest RDA news
+    runs-on: ubuntu-latest
+    steps:
+     - name: Check out the repository
+       uses: actions/checkout@v3
+
+     - name: Set up Python
+       uses: actions/setup-python@v3
+       with:
+         python-version: '3.8'
+
+     - name: Install dependencies
+       run: |
+         python -m pip install --upgrade pip
+         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+     - name: Run crawler script to fetch news
+       run: |
+          python crawling_web.py > rda_news.txt
+
+     - name: Upload crawled data
+       uses: actions/upload-artifact@v3
+       with:
+          name: rda_news_data
+          path: rda_news.txt
+
+  job_2:
+    name: Process RDA news data
+    needs: job_1
+    runs-on: windows-latest
+    steps:
+      - name: Download crawled data from job 1
+        uses: actions/download-artifact@v3
+        with:
+          name: rda_news_data
+          
+      - name: Process data
+        run: |
+          # 데이터 가공 Python 스크립트를 사용해 필요 형식으로 데이터 변경
+          python process_data.py rda_news.txt > processed_rda_news.txt
+
+      - name: Upload processed data
+        uses: actions/upload-artifact@v3
+        with:
+          name: processed_rda_news
+          path: processed_rda_news.txt
+          
+  job_3:
+    name: Display final processed data
+    needs: job_2
+    runs-on: macOS-latest
+    steps:
+      - name: Download math result for job 2
+        uses: actions/download-artifact@v3
+        with:
+          name: processed_rda_news
+      - name: Print the final news data
+        run: |
+          cat processed_rda_news.txt
