@@ -81,7 +81,7 @@ def extract_article_data_me(soup):
         if link_tag:
             # 제목, 날짜 가져오기
             title = link_tag.get_text(strip=True)
-            date = row.select('td')[-1].get_text(strip=True)
+            date = row.select('td')[-2].get_text(strip=True)
 
             if date == today_date:
                 # 링크 생성
