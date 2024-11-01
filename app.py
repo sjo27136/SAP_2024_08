@@ -124,7 +124,6 @@ def display_news():
     nongsaro_url = 'https://www.nongsaro.go.kr/portal/ps/psa/psac/farmLocalNewsLst.ps?pageIndex=1&pageSize=1&menuId=PS03939&keyval=&sType=&sSrchType=sSj&sText='
     me_url = "https://www.me.go.kr/home/web/index.do?menuId=10525"
 
-
     # 농촌진흥청 뉴스
     rda_soup = parsing_beautifulsoup(rda_url)
     rda_articles = extract_article_data(rda_soup)
@@ -141,7 +140,7 @@ def display_news():
 
     # 스트림릿 앱 설정
     st.set_page_config(page_title="오늘의 농업 뉴스", layout="wide")
-    st.title(f"📢 오늘의 농업 뉴스 - {today_date}")
+    st.markdown(f"<h1 style='font-size: 36px;'>📢 오늘의 농업 뉴스 - {today_date}</h1>", unsafe_allow_html=True)
 
     # 세 개의 열로 구성
     col1, col2, col3 = st.columns(3)
@@ -151,7 +150,7 @@ def display_news():
         st.markdown(
             """
             <div style='border: 2px solid #0073e6; border-radius: 10px; padding: 15px; background-color: #f9f9f9;'>
-                <h2 style='color: #0073e6;'>농촌진흥청 📰</h2>
+                <h2 style='color: #0073e6; font-size: 27px;'>농촌진흥청 📰</h2>
             """,
             unsafe_allow_html=True
         )
@@ -159,8 +158,8 @@ def display_news():
             for article in rda_articles:
                 st.markdown(
                     f"""
-                    <div style='margin-bottom: 15px;'>
-                        <h3 style='margin: 0;'>{article['title']}</h3>
+                    <div style='margin-bottom: 15px; font-size: 12px;'>
+                        <h3 style='margin: 0; font-size: 18px;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
@@ -176,7 +175,7 @@ def display_news():
         st.markdown(
             """
             <div style='border: 2px solid #28a745; border-radius: 10px; padding: 15px; background-color: #f9f9f9;'>
-                <h2 style='color: #28a745;'>농사로 🌾</h2>
+                <h2 style='color: #28a745; font-size: 27px;'>농사로 🌾</h2>
             """,
             unsafe_allow_html=True
         )
@@ -184,8 +183,8 @@ def display_news():
             for article in nongsaro_articles:
                 st.markdown(
                     f"""
-                    <div style='margin-bottom: 15px;'>
-                        <h3 style='margin: 0;'>{article['title']}</h3>
+                    <div style='margin-bottom: 15px; font-size: 12px;'>
+                        <h3 style='margin: 0; font-size: 18px;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
@@ -201,7 +200,7 @@ def display_news():
         st.markdown(
             """
             <div style='border: 2px solid #ffcc00; border-radius: 10px; padding: 15px; background-color: #f9f9f9;'>
-                <h2 style='color: #ffcc00;'>환경부 🌍</h2>
+                <h2 style='color: #ffcc00; font-size: 27px;'>환경부 🌍</h2>
             """,
             unsafe_allow_html=True
         )
@@ -209,8 +208,8 @@ def display_news():
             for article in me_articles:
                 st.markdown(
                     f"""
-                    <div style='margin-bottom: 15px;'>
-                        <h3 style='margin: 0;'>{article['title']}</h3>
+                    <div style='margin-bottom: 15px; font-size: 12px;'>
+                        <h3 style='margin: 0; font-size: 18px;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
@@ -220,7 +219,6 @@ def display_news():
         else:
             st.write("최근 뉴스가 없습니다.")
         st.markdown("</div>", unsafe_allow_html=True)
-
 
 if __name__ == "__main__":
     display_news()
