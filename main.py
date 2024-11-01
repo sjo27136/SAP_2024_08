@@ -58,21 +58,21 @@ if __name__ == "__main__":
     # 새로운 기사 확인
     new_articles = [article for article in all_articles if article not in previous_articles]
 
-    if new_articles:
-        # 새로운 소식 출처를 포함한 메시지 생성
-        sources = set()  # 출처를 저장할 집합
+    # if new_articles:
+    #     # 새로운 소식 출처를 포함한 메시지 생성
+    #     sources = set()  # 출처를 저장할 집합
 
-        for article in new_articles:
-            if "[농촌진흥청]" in article['title']:
-                sources.add("농촌진흥청")
-            elif "[농사로]" in article['title']:
-                sources.add("농사로")
-            elif "[환경부]" in article['title']:
-                sources.add("환경부")
+    #     for article in new_articles:
+    #         if "[농촌진흥청]" in article['title']:
+    #             sources.add("농촌진흥청")
+    #         elif "[농사로]" in article['title']:
+    #             sources.add("농사로")
+    #         elif "[환경부]" in article['title']:
+    #             sources.add("환경부")
 
-        if sources:
-            message = ", ".join(sources) + "에서 새로운 소식이 있습니다!"
-            send_sms(message)
+    #     if sources:
+    #         message = ", ".join(sources) + "에서 새로운 소식이 있습니다!"
+    #         send_sms(message)
 
     # GitHub에 Issue 업로드
     issue_title = f"{today_date} 보도자료"
