@@ -118,12 +118,11 @@ def send_email(subject, body):
         print(f"이메일 전송 실패: {e}")
 
 
-
 def display_news():
     # 크롤링할 URL
     rda_url = 'https://rda.go.kr/board/board.do?mode=list&prgId=day_farmprmninfoEntry'
     nongsaro_url = 'https://www.nongsaro.go.kr/portal/ps/psa/psac/farmLocalNewsLst.ps?pageIndex=1&pageSize=1&menuId=PS03939&keyval=&sType=&sSrchType=sSj&sText='
-    me_url = "https://www.me.go.kr/home/web/board/read.do?pagerOffset=0&maxPageItems=10&maxIndexPages=10&searchKey=&searchValue=&menuId=10525&orgCd=&boardId=1705390&boardMasterId=1&boardCategoryId=&decorator="
+    me_url = "https://www.me.go.kr/home/web/index.do?menuId=10525"
 
 
     # 농촌진흥청 뉴스
