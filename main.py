@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 from pytz import timezone
-from app import extract_article_data_nongsaro, extract_article_data_me
+from app import extract_article_data_nongsaro, extract_article_data_me, send_email
 from app import parsing_beautifulsoup, extract_article_data
 from github_utils import get_github_repo, upload_github_issue
 from sms_sender import send_sms
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     # if new_articles:
     #     # 새로운 소식 출처를 포함한 메시지 생성
     #     sources = set()  # 출처를 저장할 집합
-
+    #
     #     for article in new_articles:
     #         if "[농촌진흥청]" in article['title']:
     #             sources.add("농촌진흥청")
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     #             sources.add("농사로")
     #         elif "[환경부]" in article['title']:
     #             sources.add("환경부")
-
+    #
     #     if sources:
     #         message = ", ".join(sources) + "에서 새로운 소식이 있습니다!"
     #         send_sms(message)

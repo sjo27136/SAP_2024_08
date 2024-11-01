@@ -98,6 +98,7 @@ def extract_article_data_me(soup):
                 })
     return articles
 
+
 def send_email(subject, body):
     """이메일을 전송합니다."""
     email_address = os.environ.get('MAIL_ADDRESS')
