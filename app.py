@@ -98,22 +98,20 @@ def extract_article_data_me(soup):
                 })
     return articles
 
-def send_email(subject, body, to_email):
+def send_email(subject, body):
     """이메일을 전송합니다."""
-    sender_email = os.environ['MY_EMAIL']  # 발신자 이메일
-    sender_password = os.environ['MY_EMAIL_PASSWORD']  # 발신자 이메일 비밀번호
+    email_address = os.environ.get('MAIL_ADDRESS')
+    email_password = os.environ.get('MAIL_PASSWORD')
 
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = to_email
+    msg = MIMEText(body, 'html')
     msg['Subject'] = subject
-
-    msg.attach(MIMEText(body, 'plain'))
+    msg['From'] = email_address
+    msg['To'] = email_address  # 수신자 이메일 (발신자와 동일)
 
     try:
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
             server.starttls()  # TLS 보안 시작
-            server.login(sender_email, sender_password)
+            server.login(email_address, email_password)
             server.send_message(msg)
             print("이메일 전송 성공!")
     except Exception as e:
