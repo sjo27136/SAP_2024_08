@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # GitHub에 Issue 업로드
     issue_title = f"{today_date} 보도자료"
     upload_contents = "<br><br>".join(
-        [f"<h3>{article['title']} ({article['date']})</h3><p>- 내용: {article['content']}</p><p>- URL: <a href='{article['url']}'>{article['url']}</a></p>" for article in all_articles]
+        [f"<h3>{article['title']} ({article['date']})</h3><h4>- 내용: {article['content']}</h4><p>- URL: <a href='{article['url']}'>{article['url']}</a></p>" for article in all_articles]
     )
 
     repo = get_github_repo(access_token, repository_name)
