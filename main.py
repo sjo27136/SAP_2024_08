@@ -76,8 +76,8 @@ if __name__ == "__main__":
 
     # GitHub에 Issue 업로드
     issue_title = f"{today_date} 보도자료"
-    upload_contents = "\n\n".join(
-        [f"### {article['title']} ({article['date']})<br>- 내용: {article['content']}<br>- URL: <a href='{article['url']}'>{article['url']}</a><br><br>" for article in all_articles]
+    upload_contents = "<br><br>".join(
+        [f"<h3>{article['title']} ({article['date']})</h3><p>- 내용: {article['content']}</p><p>- URL: <a href='{article['url']}'>{article['url']}</a></p>" for article in all_articles]
     )
 
     repo = get_github_repo(access_token, repository_name)
@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
     # 이메일 전송: 이슈 내용 그대로 전송
     email_subject = issue_title
-    email_body = f"<h2>{email_subject}</h2><br>{upload_contents}"
+    email_body = f"<h1>{email_subject}</h1><br>{upload_contents}"
     send_email(email_subject, email_body)
 
 
