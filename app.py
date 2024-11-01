@@ -81,7 +81,7 @@ def extract_article_data_me(soup):
         if link_tag:
             # 제목, 날짜 가져오기
             title = link_tag.get_text(strip=True)
-            date = row.select('td')[-2].get_text(strip=True)
+            date = row.select('td')[-1].get_text(strip=True)
 
             if date == today_date:
                 # 링크 생성
@@ -89,7 +89,7 @@ def extract_article_data_me(soup):
                 full_url = base_url + relative_url
                 # 상세 페이지에 들어가서 내용 가져오기
                 detail_soup = parsing_beautifulsoup(full_url)
-                content_tag = detail_soup.select_one('.content')
+                content_tag = detail_soup.select_one(".view_con p")
                 content = content_tag.get_text(strip=True)[:50] if content_tag else "내용 없음"
 
                 # articles 리스트에 추가
