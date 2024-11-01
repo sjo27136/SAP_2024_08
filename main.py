@@ -85,9 +85,9 @@ if __name__ == "__main__":
     upload_github_issue(repo, issue_title, upload_contents)
     print("Upload Github Issue Success!")
 
-    # 이메일 전송
+    # 이메일 전송: 이슈 내용 그대로 전송
     email_subject = issue_title
-    email_body = upload_contents
+    email_body = f"<h2>{email_subject}</h2><br>{upload_contents}"
     send_email(email_subject, email_body)
 
     # 현재 기사를 저장
