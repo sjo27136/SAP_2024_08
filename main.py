@@ -45,7 +45,7 @@ if __name__ == "__main__":
     nongsaro_articles = extract_article_data_nongsaro(nongsaro_soup)
 
     # 환경부 데이터 수집
-    me_url = "https://www.me.go.kr/home/web/board/read.do?pagerOffset=0&maxPageItems=10&maxIndexPages=10&searchKey=&searchValue=&menuId=10525&orgCd=&boardId=1705390&boardMasterId=1&boardCategoryId=&decorator="
+    me_url = "https://www.me.go.kr/home/web/index.do?menuId=10525"
     me_soup = parsing_beautifulsoup(me_url)
     me_articles = extract_article_data_me(me_soup)
 
@@ -88,7 +88,6 @@ if __name__ == "__main__":
     email_subject = issue_title
     email_body = f"<h1>{email_subject}</h1><br>{upload_contents}"
     send_email(email_subject, email_body)
-
 
     # 현재 기사를 저장
     save_current_articles(all_articles)

@@ -1,5 +1,4 @@
 import os
-
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
@@ -139,9 +138,11 @@ def display_news():
     me_soup = parsing_beautifulsoup(me_url)
     me_articles = extract_article_data_me(me_soup)
 
+    today_date = datetime.now().strftime("%Y년 %m월 %d일")
+
     # 스트림릿 앱 설정
     st.set_page_config(page_title="오늘의 농업 뉴스", layout="wide")
-    st.title("📢 오늘의 농업 뉴스")
+    st.title(f"📢 오늘의 농업 뉴스 - {today_date}")
 
     # 세 개의 열로 구성
     col1, col2, col3 = st.columns(3)
@@ -162,7 +163,6 @@ def display_news():
                     <div style='margin-bottom: 15px;'>
                         <h3 style='margin: 0;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
-                        <strong>날짜:</strong> {article['date']}<br>                        
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
                     """,
@@ -188,7 +188,6 @@ def display_news():
                     <div style='margin-bottom: 15px;'>
                         <h3 style='margin: 0;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
-                        <strong>날짜:</strong> {article['date']}<br>                        
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
                     """,
@@ -214,7 +213,6 @@ def display_news():
                     <div style='margin-bottom: 15px;'>
                         <h3 style='margin: 0;'>{article['title']}</h3>
                         <strong>내용:</strong> {article['content']}<br>
-                        <strong>날짜:</strong> {article['date']}<br>                        
                         <a href="{article['url']}" style="color: #1f77b4;">🔗 읽기 더보기</a>
                     </div>
                     """,
