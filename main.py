@@ -71,13 +71,13 @@ if __name__ == "__main__":
                 sources.add("환경부")
 
         if sources:
-            message = ", ".join(sources) + "에서 새로운 소식이 있습니다! https://sapnews.streamlit.app/"
+            message = ", ".join(sources) + "새로운 소식: https://sapnews.streamlit.app/"
             send_sms(message)
 
     # GitHub에 Issue 업로드
     issue_title = f"{today_date} 보도자료"
     upload_contents = (
-            "<h2>한눈에 보기: <a href='https://sapnews.streamlit.app/'>https://sapnews.streamlit.app/</a></h2><br><br>"
+            "<h3>한눈에 보기: <a href='https://sapnews.streamlit.app/'>https://sapnews.streamlit.app/</a></h3><br><br>"
             + "<br><br>".join(
         [
             f"<h3>{article['title']} ({article['date']})</h3><h4>- 내용: {article['content']}</h4><p>- URL: <a href='{article['url']}'>{article['url']}</a></p>"
@@ -93,7 +93,6 @@ if __name__ == "__main__":
     email_subject = issue_title
     email_body = (
         f"<h1>{email_subject}</h1><br>"
-        "<h2>한눈에 보기: <a href='https://sapnews.streamlit.app/'>https://sapnews.streamlit.app/</a></h2><br>"
         f"{upload_contents}"
     )
     send_email(email_subject, email_body)
