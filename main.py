@@ -71,7 +71,7 @@ if __name__ == "__main__":
                 sources.add("환경부")
 
         if sources:
-            message = ", ".join(sources) + "새로운 소식: https://sapnews.streamlit.app/"
+            message = "새로운 소식: https://sapnews.streamlit.app/"
             send_sms(message)
 
     # GitHub에 Issue 업로드
