@@ -58,26 +58,31 @@ if __name__ == "__main__":
     # 새로운 기사 확인
     new_articles = [article for article in all_articles if article not in previous_articles]
 
-    # if new_articles:
-    #      # 새로운 소식 출처를 포함한 메시지 생성
-    #      sources = set()  # 출처를 저장할 집합
+    if new_articles:
+         # 새로운 소식 출처를 포함한 메시지 생성
+         sources = set()  # 출처를 저장할 집합
 
-    #      for article in new_articles:
-    #          if "[농촌진흥청]" in article['title']:
-    #              sources.add("농촌진흥청")
-    #          elif "[농사로]" in article['title']:
-    #              sources.add("농사로")
-    #          elif "[환경부]" in article['title']:
-    #              sources.add("환경부")
+         for article in new_articles:
+             if "[농촌진흥청]" in article['title']:
+                 sources.add("농촌진흥청")
+             elif "[농사로]" in article['title']:
+                 sources.add("농사로")
+             elif "[환경부]" in article['title']:
+                 sources.add("환경부")
 
-    #      if sources:
-    #          message = ", ".join(sources) + "에서 새로운 소식이 있습니다!"
-    #          send_sms(message)
+         if sources:
+             message = ", ".join(sources) + "에서 새로운 소식이 있습니다!"
+             send_sms(message)
 
     # GitHub에 Issue 업로드
     issue_title = f"{today_date} 보도자료"
-    upload_contents = "<br><br>".join(
-        [f"<h3>{article['title']} ({article['date']})</h3><h4>- 내용: {article['content']}</h4><p>- URL: <a href='{article['url']}'>{article['url']}</a></p>" for article in all_articles]
+    upload_contents = (
+            "<h2>한눈에 보기: <a href='https://sapnews.streamlit.app/'>https://sapnews.streamlit.app/</a></h2><br><br>"
+            + "<br><br>".join(
+        [
+            f"<h3>{article['title']} ({article['date']})</h3><h4>- 내용: {article['content']}</h4><p>- URL: <a href='{article['url']}'>{article['url']}</a></p>"
+            for article in all_articles]
+    )
     )
 
     repo = get_github_repo(access_token, repository_name)
@@ -86,7 +91,11 @@ if __name__ == "__main__":
 
     # 이메일 전송: 이슈 내용 그대로 전송
     email_subject = issue_title
-    email_body = f"<h1>{email_subject}</h1><br>{upload_contents}"
+    email_body = (
+        f"<h1>{email_subject}</h1><br>"
+        "<h2>한눈에 보기: <a href='https://sapnews.streamlit.app/'>https://sapnews.streamlit.app/</a></h2><br>"
+        f"{upload_contents}"
+    )
     send_email(email_subject, email_body)
 
     # 현재 기사를 저장
