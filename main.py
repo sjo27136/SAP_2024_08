@@ -34,33 +34,26 @@ if __name__ == "__main__":
     today = datetime.now(seoul_timezone)
     today_date = today.strftime("%Y년 %m월 %d일")
 
-    # 농촌진흥청 보도자료 크롤링
     rda_news_url = "https://rda.go.kr/board/board.do?mode=list&prgId=day_farmprmninfoEntry"
     rda_soup = parsing_beautifulsoup(rda_news_url)
     rda_articles = extract_article_data(rda_soup)
 
-    # 농사로 공지사항 크롤링
     nongsaro_url = "https://www.nongsaro.go.kr/portal/ps/psa/psac/farmLocalNewsLst.ps?pageIndex=1&pageSize=1&menuId=PS03939&keyval=&sType=&sSrchType=sSj&sText="
     nongsaro_soup = parsing_beautifulsoup(nongsaro_url)
     nongsaro_articles = extract_article_data_nongsaro(nongsaro_soup)
 
-    # 환경부 데이터 수집
     me_url = "https://www.me.go.kr/home/web/index.do?menuId=10525"
     me_soup = parsing_beautifulsoup(me_url)
     me_articles = extract_article_data_me(me_soup)
 
-    # 모든 기사들을 합치기
     all_articles = rda_articles + nongsaro_articles + me_articles
 
-    # 이전 기사 로드
     previous_articles = load_previous_articles()
 
-    # 새로운 기사 확인
     new_articles = [article for article in all_articles if article not in previous_articles]
 
     if new_articles:
-         # 새로운 소식 출처를 포함한 메시지 생성
-         sources = set()  # 출처를 저장할 집합
+         sources = set()  
 
          for article in new_articles:
              if "[농촌진흥청]" in article['title']:
@@ -89,7 +82,7 @@ if __name__ == "__main__":
     upload_github_issue(repo, issue_title, upload_contents)
     print("Upload Github Issue Success!")
 
-    # 이메일 전송: 이슈 내용 그대로 전송
+    # 이메일 전송
     email_subject = issue_title
     email_body = (
         f"<h1>{email_subject}</h1><br>"
