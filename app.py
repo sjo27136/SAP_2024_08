@@ -1,4 +1,5 @@
 import os
+import pytz
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
@@ -6,7 +7,6 @@ import re
 from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 
 def parsing_beautifulsoup(url):
@@ -32,7 +32,7 @@ def extract_article_data(soup):
             articles.append({
                 "title": f"[농촌진흥청] {title}",
                 "date": date,
-                "content": f"「{content[:50]}...」",  
+                "content": f"「{content[:50]}...」",
                 "url": full_url
             })
     return articles
@@ -52,15 +52,12 @@ def extract_article_data_nongsaro(soup):
             date = news_item.select_one('.contBox em.date').get_text(strip=True)
 
             if date == today_date:
-                # onclick 속성에서 숫자 추출
                 if 'onclick' in link_tag.attrs:
                     onclick_attr = link_tag['onclick']
-                    number = onclick_attr.split("'")[1] 
+                    number = onclick_attr.split("'")[1]
 
-                    # base_url에 숫자 삽입하여 full_url 생성
                     full_url = base_url.format(number)
 
-                    # articles 리스트에 추가
                     articles.append({
                         "title": f"[농사로] {title}",
                         "date": date,
@@ -84,12 +81,10 @@ def extract_article_data_me(soup):
             if date == today_date:
                 relative_url = link_tag['href']
                 full_url = base_url + relative_url
-                # 상세 페이지에 들어가서 내용 가져오기
                 detail_soup = parsing_beautifulsoup(full_url)
                 content_tag = detail_soup.select_one(".view_con p")
                 content = content_tag.get_text(strip=True)[:50] if content_tag else "내용 없음"
 
-                # articles 리스트에 추가
                 articles.append({
                     "title": f"[환경부] {title}",
                     "date": date,
@@ -107,7 +102,7 @@ def send_email(subject, body):
     msg = MIMEText(body, 'html')
     msg['Subject'] = subject
     msg['From'] = email_address
-    msg['To'] = email_address 
+    msg['To'] = email_address
 
     try:
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
@@ -134,7 +129,8 @@ def display_news():
     me_soup = parsing_beautifulsoup(me_url)
     me_articles = extract_article_data_me(me_soup)
 
-    today_date = datetime.now().strftime("%Y년 %m월 %d일")
+    timezone = pytz.timezone('Asia/Seoul')
+    today_date = datetime.now(timezone).strftime("%Y년 %m월 %d일")
 
     st.set_page_config(page_title="오늘의 농업 뉴스", layout="wide")
     st.markdown(f"<h1 style='font-size: 36px;'>📢 오늘의 농업 뉴스 - {today_date}</h1>", unsafe_allow_html=True)
@@ -212,7 +208,6 @@ def display_news():
         else:
             st.write("최근 뉴스가 없습니다.")
         st.markdown("</div>", unsafe_allow_html=True)
-
 
 
 if __name__ == "__main__":
