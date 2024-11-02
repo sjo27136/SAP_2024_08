@@ -32,7 +32,7 @@ def extract_article_data(soup):
             articles.append({
                 "title": f"[농촌진흥청] {title}",
                 "date": date,
-                "content": f"「{content[:50]}...」",  # 50자만 표시
+                "content": f"「{content[:50]}...」",  
                 "url": full_url
             })
     return articles
@@ -47,7 +47,6 @@ def extract_article_data_nongsaro(soup):
     for news_item in news_items:
         link_tag = news_item.select_one('a')
         if link_tag:
-            # 제목, 내용, 날짜 가져오기
             title = news_item.select_one('.contBox strong').get_text(strip=True)
             content = news_item.select_one('.contBox p.txt').get_text(strip=True)[:50] + "..."
             date = news_item.select_one('.contBox em.date').get_text(strip=True)
@@ -56,7 +55,7 @@ def extract_article_data_nongsaro(soup):
                 # onclick 속성에서 숫자 추출
                 if 'onclick' in link_tag.attrs:
                     onclick_attr = link_tag['onclick']
-                    number = onclick_attr.split("'")[1]  # 숫자만 추출
+                    number = onclick_attr.split("'")[1] 
 
                     # base_url에 숫자 삽입하여 full_url 생성
                     full_url = base_url.format(number)
@@ -79,12 +78,10 @@ def extract_article_data_me(soup):
     for row in rows:
         link_tag = row.select_one('a')
         if link_tag:
-            # 제목, 날짜 가져오기
             title = link_tag.get_text(strip=True)
             date = row.select('td')[-2].get_text(strip=True)
 
             if date == today_date:
-                # 링크 생성
                 relative_url = link_tag['href']
                 full_url = base_url + relative_url
                 # 상세 페이지에 들어가서 내용 가져오기
@@ -110,7 +107,7 @@ def send_email(subject, body):
     msg = MIMEText(body, 'html')
     msg['Subject'] = subject
     msg['From'] = email_address
-    msg['To'] = email_address  # 수신자 이메일 (발신자와 동일)
+    msg['To'] = email_address 
 
     try:
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
@@ -124,33 +121,26 @@ def send_email(subject, body):
 
 
 def display_news():
-    # 크롤링할 URL
     rda_url = 'https://rda.go.kr/board/board.do?mode=list&prgId=day_farmprmninfoEntry'
     nongsaro_url = 'https://www.nongsaro.go.kr/portal/ps/psa/psac/farmLocalNewsLst.ps?pageIndex=1&pageSize=1&menuId=PS03939&keyval=&sType=&sSrchType=sSj&sText='
     me_url = "https://www.me.go.kr/home/web/index.do?menuId=10525"
 
-    # 농촌진흥청 뉴스
     rda_soup = parsing_beautifulsoup(rda_url)
     rda_articles = extract_article_data(rda_soup)
 
-    # 농사로 뉴스
     nongsaro_soup = parsing_beautifulsoup(nongsaro_url)
     nongsaro_articles = extract_article_data_nongsaro(nongsaro_soup)
 
-    # 환경부 뉴스
     me_soup = parsing_beautifulsoup(me_url)
     me_articles = extract_article_data_me(me_soup)
 
     today_date = datetime.now().strftime("%Y년 %m월 %d일")
 
-    # 스트림릿 앱 설정
     st.set_page_config(page_title="오늘의 농업 뉴스", layout="wide")
     st.markdown(f"<h1 style='font-size: 36px;'>📢 오늘의 농업 뉴스 - {today_date}</h1>", unsafe_allow_html=True)
 
-    # 세 개의 열로 구성
     col1, col2, col3 = st.columns(3)
 
-    # 농촌진흥청 뉴스 박스
     with col1:
         st.markdown(
             """
@@ -175,7 +165,6 @@ def display_news():
             st.write("최근 뉴스가 없습니다.")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # 농사로 뉴스 박스
     with col2:
         st.markdown(
             """
@@ -200,7 +189,6 @@ def display_news():
             st.write("최근 뉴스가 없습니다.")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # 환경부 뉴스 박스
     with col3:
         st.markdown(
             """
