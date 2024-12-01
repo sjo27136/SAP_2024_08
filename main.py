@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
          if sources:
              message = ", ".join(sources) + "에서 새로운 소식이 있습니다!"
-             send_sms(message)
+             #send_sms(message)
 
     # GitHub에 Issue 업로드
     issue_title = f"{today_date} 보도자료"
