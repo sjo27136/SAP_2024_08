@@ -7,11 +7,27 @@ import re
 from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
-
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+import requests
 
 def parsing_beautifulsoup(url):
-    response = requests.get(url)
-    return BeautifulSoup(response.text, 'html.parser')
+    session = create_session_with_retry()
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+    try:
+        response = session.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        return response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching URL {url}: {e}")
+        return None
+
+# def parsing_beautifulsoup(url):
+#     response = requests.get(url)
+#     return BeautifulSoup(response.text, 'html.parser')
+    
 
 def extract_article_data(soup):
     articles = []
