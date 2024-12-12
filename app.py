@@ -27,7 +27,8 @@ def parsing_beautifulsoup(url):
     try:
         response = session.get(url, headers=headers, timeout=10)
         response.raise_for_status()
-        return response.text
+        # BeautifulSoup 객체로 파싱 후 반환
+        return BeautifulSoup(response.text, "html.parser")
     except requests.exceptions.RequestException as e:
         print(f"Error fetching URL {url}: {e}")
         return None
