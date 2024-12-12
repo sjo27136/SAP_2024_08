@@ -1,39 +1,39 @@
-# name: Save Processed News as JSON
+name: Save Processed News as JSON
 
-# on:
-#   workflow_dispatch: # 수동 실행 트리거
-#   push:              # 기존 데이터 변경 시 자동 실행
+on:
+  workflow_dispatch: # 수동 실행 트리거
+  push:              # 기존 데이터 변경 시 자동 실행
 
-# jobs:
-#   save-news:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check out the repository
-#         uses: actions/checkout@v3
+jobs:
+  save-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
 
-#       - name: Download processed news artifact
-#         uses: actions/download-artifact@v3
-#         with:
-#           name: processed_rda_news
+      - name: Download processed news artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: processed_rda_news
 
-#       - name: Convert processed data to JSON
-#         run: |
-#           python -c "
-# import json
-# data = []
-# with open('processed_rda_news.txt', 'r') as f:
-#     for line in f:
-#         title, content, url, date = line.strip().split('|')  # 라인을 구분자로 분리
-#         data.append({'title': title, 'content': content, 'url': url, 'date': date})
-# with open('agriculture_news.json', 'w') as json_file:
-#     json.dump(data, json_file, ensure_ascii=False, indent=4)
-#           "
+      - name: Convert processed data to JSON
+        run: |
+          python -c "
+import json
+data = []
+with open('processed_rda_news.txt', 'r') as f:
+    for line in f:
+        title, content, url, date = line.strip().split('|')  # 라인을 구분자로 분리
+        data.append({'title': title, 'content': content, 'url': url, 'date': date})
+with open('agriculture_news.json', 'w') as json_file:
+    json.dump(data, json_file, ensure_ascii=False, indent=4)
+          "
 
-#       - name: Commit JSON file
-#         run: |
-#           git config --global user.name "GitHub Actions"
-#           git config --global user.email "actions@github.com"
-#           git add agriculture_news.json
-#           git commit -m "Add latest agriculture news JSON file"
-#           git push
+      - name: Commit JSON file
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add agriculture_news.json
+          git commit -m "Add latest agriculture news JSON file"
+          git push
 
